@@ -1,0 +1,7 @@
+# Git ignore file
+
+# direnv
+.envrc
+
+# project
+*.conf
