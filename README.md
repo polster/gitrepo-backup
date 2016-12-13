@@ -10,7 +10,8 @@ GIT Backup Script
 
 * Access to the remote git repo over git SSH
 * Local SSH key to be authorized on the remote repo (read)
-* [direnv](https://direnv.net/)
+* Newer version of git
+* Bonus: [direnv](https://direnv.net/)
 
 ## User Manual
 
@@ -25,11 +26,11 @@ The following setup is just one variant how to setup the backup script.
 
 #### Preparation
 
-* Install [direnv](https://direnv.net/)
+* Install [direnv](https://direnv.net/) (optional)
 * Git clone this project locally
 * cd into the cloned project
 
-#### Environment config
+####<a name="envConfig"></a> Environment config
 
 * Create a new direnv config file:
 ```
@@ -70,5 +71,9 @@ project_456
 * Ensure that the needed env vars are being loaded under the cron user
 * Create a new cron job (e.g. run daily at midnight):
 ```
-@daily ~/backup.sh > /var/logs/git-backup.log 2>&1
+@daily ~/backup.sh > /var/logs/git_backup_`date +"%Y%m%d-%H%M%S"`.log 2>&1
+```
+* In case you're not using direnv, one alternative will be to create a separate env file containing the required variables (see [env config](#envConfig)) and then source the same as part of your cron job (sample):
+```
+@daily . /backup/gitrepo/script/repo-config-xyz/xyz-env; /backup/gitrepo/script/gitrepo-backup.sh > /var/log/gitrepo-backup/git-backup-xyz-`date +"%Y%m%d-%H%M%S"`.log 2>&1
 ```
